@@ -40,7 +40,6 @@ It is built using a **FastAPI backend** and a **Next.js + TypeScript frontend**,
 ###  Option 1 — Run Locally (for Development)
 
 #### 1️. Backend (FastAPI)
-```bash
 cd backend
 python -m venv .venv
 .venv\Scripts\activate       # (Windows)
@@ -52,8 +51,6 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 API Docs → http://127.0.0.1:8000/docs
 
 2️. Frontend (Next.js)
-bash
-Copy code
 cd ../frontend
 npm install
 npm run dev
@@ -62,13 +59,11 @@ npm run dev
 3️. Connect Both
 Make sure backend URL in frontend/lib/api.ts is:
 
-ts
-Copy code
+
 export const API_BASE = "http://127.0.0.1:8000";
 If needed, enable CORS in backend main.py:
 
-python
-Copy code
+
 from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
@@ -81,8 +76,7 @@ app.add_middleware(
 Option 2 — Run Using Docker Compose
 If you have docker-compose.yml:
 
-bash
-Copy code
+
 cd quickpoll
 docker-compose up --build
 Access:
