@@ -52,26 +52,59 @@ def list_polls(session: Session = Depends(get_session)):
 async def vote(poll_id: int, option_id: int, session: Session = Depends(get_session)):
     try:
         opt = crud.vote(session, option_id)
+        print(f"🗳️ VOTE: Poll {poll_id}, Option {option_id}, New votes: {opt.votes}")
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    asyncio.create_task(manager.broadcast({"type":"vote","poll_id": poll_id, "option_id": option_id, "votes": opt.votes}))
+
+    msg = {"type": "vote", "poll_id": poll_id, "option_id": option_id, "votes": opt.votes}
+    print("📢 Broadcasting:", msg)
+    asyncio.create_task(manager.broadcast(msg))
     return {"option_id": opt.id, "votes": opt.votes}
+
+# user_votes = {}  # {poll_id: set(user_ids)}
+
+# @app.post("/polls/{poll_id}/vote")
+# async def vote(poll_id: int, option_id: int, payload: dict, session: Session = Depends(get_session)):
+#     user_id = payload.get("user_id")
+#     if not user_id:
+#         raise HTTPException(status_code=400, detail="Missing user_id")
+
+#     if poll_id not in user_votes:
+#         user_votes[poll_id] = set()
+#     if user_id in user_votes[poll_id]:
+#         raise HTTPException(status_code=403, detail="Already voted")
+
+#     opt = crud.vote(session, option_id)
+#     user_votes[poll_id].add(user_id)
+
+#     asyncio.create_task(manager.broadcast({
+#         "type": "vote",
+#         "poll_id": poll_id,
+#         "option_id": option_id,
+#         "votes": opt.votes
+#     }))
+#     return {"option_id": opt.id, "votes": opt.votes}
 
 @app.post("/polls/{poll_id}/like")
 async def like(poll_id: int, session: Session = Depends(get_session)):
     try:
         poll = crud.like_poll(session, poll_id)
+        print(f"❤️ LIKE: Poll {poll_id}, New likes: {poll.likes}")
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-    asyncio.create_task(manager.broadcast({"type":"like","poll_id": poll_id, "likes": poll.likes}))
+
+    msg = {"type": "like", "poll_id": poll_id, "likes": poll.likes}
+    print("📢 Broadcasting:", msg)
+    asyncio.create_task(manager.broadcast(msg))
     return {"poll_id": poll.id, "likes": poll.likes}
 
-@app.websocket("/ws")
+@app.websocket("/ws/polls")
 async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
+    print(f"WebSocket connected: {websocket.client}")
     try:
         while True:
-            # receive pings (clients can choose to send anything or keep silent)
             await websocket.receive_text()
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+        print(f"WebSocket disconnected: {websocket.client}")

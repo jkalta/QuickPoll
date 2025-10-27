@@ -16,13 +16,16 @@ class ConnectionManager:
 
     async def broadcast(self, message: dict):
         data = json.dumps(message)
+        print(f"📢 Broadcasting to {len(self.active_connections)} clients: {message}")
         disconnected = []
         for conn in list(self.active_connections):
             try:
                 await conn.send_text(data)
-            except Exception:
+            except Exception as e:
+                print(f"❌ Error sending message: {e}")
                 disconnected.append(conn)
         for d in disconnected:
             self.disconnect(d)
+
 
 manager = ConnectionManager()
