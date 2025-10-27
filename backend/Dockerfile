@@ -1,7 +1,15 @@
+# Use official lightweight Python image
 FROM python:3.11-slim
+
+# Set working directory
 WORKDIR /app
-COPY app/requirements.txt .
-RUN pip install -r app/requirements.txt
-COPY app /app
-ENV DATABASE_URL=sqlite:///./quickpoll.db
+
+# Copy and install dependencies
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy backend source code
+COPY backend/ .
+
+# Run FastAPI with Uvicorn
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
