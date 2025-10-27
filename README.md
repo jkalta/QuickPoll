@@ -43,20 +43,20 @@ It is built using a **FastAPI backend** and a **Next.js + TypeScript frontend**,
 cd backend
 python -m venv .venv
 .venv\Scripts\activate       # (Windows)
-# source .venv/bin/activate  # (Mac/Linux)
+source .venv/bin/activate  # (Mac/Linux)
 
 pip install -r app/requirements.txt
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
  Server running at → http://127.0.0.1:8000
 API Docs → http://127.0.0.1:8000/docs
 
-2️. Frontend (Next.js)
+#### 2️. Frontend (Next.js)
 cd ../frontend
 npm install
 npm run dev
  Frontend running at → http://localhost:3000
 
-3️. Connect Both
+#### 3️. Connect Both
 Make sure backend URL in frontend/lib/api.ts is:
 
 
@@ -73,7 +73,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-Option 2 — Run Using Docker Compose
+### Option 2 — Run Using Docker Compose
 If you have docker-compose.yml:
 
 
@@ -85,8 +85,7 @@ Backend → http://localhost:8000
 
 Frontend → http://localhost:3000
 
- Research & APIs / Resources Used
-Resource	Purpose
+### Research & APIs / Resources Used
 FastAPI Docs – https://fastapi.tiangolo.com/	Framework for REST + WebSocket backend
 SQLAlchemy ORM – https://www.sqlalchemy.org/	Database modeling and CRUD layer
 Next.js Docs – https://nextjs.org/docs	Frontend React framework with SSR support
@@ -95,7 +94,7 @@ TypeScript – https://www.typescriptlang.org/	Type-safe frontend development
 WebSockets (FastAPI)	Real-time communication between backend and clients
 Docker – https://docs.docker.com/	Containerization for consistent deployment
 
-Future Improvements
+### Future Improvements
 Authentication (JWT-based)
 
 Persistent storage with PostgreSQL + SQLAlchemy migrations
