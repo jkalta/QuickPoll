@@ -5,40 +5,6 @@ It is built using a **FastAPI backend** and a **Next.js + TypeScript frontend**,
 
 ---
 
-##  System Design & Architecture
-
-###  Architecture Overview
-quickpoll/
-├─ backend/ # FastAPI backend (REST + WebSockets)
-│ ├─ app/
-│ │ ├─ main.py # FastAPI entry point with routes & websocket setup
-│ │ ├─ models.py # Database models (SQLAlchemy / Pydantic)
-│ │ ├─ db.py # Database session & engine
-│ │ ├─ crud.py # CRUD operations for Polls and Votes
-│ │ ├─ websocket_manager.py # Manages connected clients and broadcast updates
-│ │ └─ requirements.txt
-│ └─ Dockerfile
-│
-├─ frontend/ # Next.js + TypeScript + Tailwind frontend
-│ ├─ pages/
-│ │ ├─ index.tsx # Home page displaying polls and vote options
-│ │ └─ _app.tsx
-│ ├─ components/
-│ │ └─ PollCard.tsx # Poll UI component with live updates
-│ ├─ hooks/
-│ │ └─ useWebSocket.ts # Hook for real-time WebSocket connection
-│ ├─ lib/
-│ │ └─ api.ts # REST API helper for backend communication
-│ ├─ styles/, configs, package.json, etc.
-│ └─ Dockerfile
-│
-└─ docker-compose.yml # Optional: Runs both backend and frontend together
-
-yaml
-Copy code
-
----
-
 ###  System Components
 
 | Layer | Technology | Description |
@@ -73,7 +39,7 @@ Copy code
 
 ###  Option 1 — Run Locally (for Development)
 
-#### 1️⃣ Backend (FastAPI)
+#### 1️. Backend (FastAPI)
 ```bash
 cd backend
 python -m venv .venv
@@ -85,7 +51,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
  Server running at → http://127.0.0.1:8000
 API Docs → http://127.0.0.1:8000/docs
 
-2️⃣ Frontend (Next.js)
+2️. Frontend (Next.js)
 bash
 Copy code
 cd ../frontend
@@ -93,7 +59,7 @@ npm install
 npm run dev
  Frontend running at → http://localhost:3000
 
-3️⃣ Connect Both
+3️. Connect Both
 Make sure backend URL in frontend/lib/api.ts is:
 
 ts
@@ -112,7 +78,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-🐳 Option 2 — Run Using Docker Compose
+Option 2 — Run Using Docker Compose
 If you have docker-compose.yml:
 
 bash
@@ -135,7 +101,7 @@ TypeScript – https://www.typescriptlang.org/	Type-safe frontend development
 WebSockets (FastAPI)	Real-time communication between backend and clients
 Docker – https://docs.docker.com/	Containerization for consistent deployment
 
-🧩Future Improvements
+Future Improvements
 Authentication (JWT-based)
 
 Persistent storage with PostgreSQL + SQLAlchemy migrations
