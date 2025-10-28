@@ -15,6 +15,7 @@ export default function HomePage() {
   // ✅ WebSocket listener: apply updates in-place
   useWebSocket("ws://localhost:8000/ws/polls", (msg) => {
     console.log("📬 WS message:", msg);
+    // @ts-ignore
     mutate((currentData) => {
       if (!currentData) return currentData;
 
