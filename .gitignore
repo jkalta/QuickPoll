@@ -15,6 +15,6 @@ dist/
 
 # OS
 .DS_Store
-backend\quickpoll.db
+backend/quickpoll.db
 
 /frontend/.env.local
