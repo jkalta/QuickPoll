@@ -103,3 +103,7 @@ Poll sharing via unique links
 
 Analytics dashboard for poll results
 
+### Deployment
+
+Frontend Deployment (Vercel): https://quick-poll-weld.vercel.app/
+Backend Deployment (Railway): https://quickpoll-production-2904.up.railway.app
